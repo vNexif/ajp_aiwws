@@ -1,0 +1,14 @@
+---
+- name: "Boot all hosts"
+  gather_facts: true
+  hosts: all
+  become: true
+  vars:
+    add_host_entries: true
+    add_resolv_entries: true
+  pre_tasks:
+  - name: "Setting hostname"
+    command: "hostnamectl set-hostname {{ inventory_hostname }}"
+  roles:
+    - common
+
