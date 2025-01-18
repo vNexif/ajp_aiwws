@@ -44,7 +44,7 @@ suricata_default_pre_reqs:
   - liblz4-dev
   - rustc
   - cargo
-  - python-yaml # Install the yaml module for Python 3 to enable suricata-update.# WARNING OPTIONAL
+#  - python-yaml # Install the yaml module for Python 3 to enable suricata-update.# WARNING OPTIONAL
   - python3-yaml
 suricata_ips_ids_reqs:
   - libnetfilter-queue-dev

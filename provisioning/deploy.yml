@@ -13,13 +13,13 @@
     - common
 - name: "Install suricata"
   gather_facts: true
-  hosts:  vg-suricata-01
+  hosts: vg-suricata-01
   become: yes
   roles:
     - suricata
-- name: "Install suricata"
-  gather_facts: true
-  hosts:  vg-suricata-02
-  become: yes
-  roles:
-    - suricata
+#- name: "Install suricata"
+#  gather_facts: true
+#  hosts: vg-suricata-02
+#  become: yes
+#  roles:
+#    - suricata

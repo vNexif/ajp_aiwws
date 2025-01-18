@@ -5,47 +5,24 @@
    force_apt_get: yes
 - name: "Before you can build Suricata for your system, ensure that you have everything you need for the installation"
   package:
-    name: "{{ suricata_default_pre_reqs }}"
+    name:
+      - suricata
     state: present
-- name: "By default, Suricata works as an IDS. If you want to use it as a IDS and IPS program"
-  package:
-    name: "{{ suricata_ips_ids_reqs }}"
-    state: present
-- name: "Extract the latest version of Suricata into /tmp"
-  unarchive:
-    src: https://www.openinfosecfoundation.org/download/suricata-{{ suricata_version }}.tar.gz
-    dest: /tmp
-    creates: /tmp/suricata-{{ suricata_version }}/LICENSE
-    remote_src: yes
-- name: "Make sure /tmp/suricata-xxx exists"
-  stat:
-    path: /tmp/suricata-{{ suricata_version }}
-  register: suricata_result
-# WARNING OPTIONAL
-# - name: "Cargo vendor only required for building the distribution"
-#   shell: cargo  chdir=/tmp install cargo-vendor >> cargo.out
-#   args:
-#     chdir: /tmp
-#     creates: cargo.out
-# - name: "Configure suricata"
-#   shell: ./configure chdir=/tmp/suricata-{{ suricata_version }} >> /tmp/surricata_configure.out
-#   args:
-#     chdir: /tmp
-#     creates: surricata_configure.out
-- name: "Configure suricata with IPS capabilities"
-  shell: ./configure --enable-nfqueue --prefix=/usr --sysconfdir=/etc --localstatedir=/var chdir=/tmp/suricata-{{ suricata_version }} >> /tmp/surricata_configure.out
-  args:
-    chdir: /tmp
-    creates: surricata_configure.out
-- name: "Make suricata"
-  shell: make chdir=/tmp/suricata-{{ suricata_version }} >> /tmp/surricata_make.out
-  args:
-    chdir: /tmp
-    creates: surricata_make.out
-- name: "Make install-full suricata"
-  shell: make install-full chdir=/tmp/suricata-{{ suricata_version }} >> /tmp/surricata_makeinstallfull.out
-  args:
-    chdir: /tmp
-    creates: surricata_makeinstallfull.out
-# - name: "Run ldconfig"
-#   shell: ldconfig
+- name: "Enable suricata service"
+  service:
+    name: "suricata"
+    enabled: yes
+    state: started
+- name: Copy suricata rules
+  ansible.builtin.copy:
+    src: ../custom_rules/my.rules
+    dest: /etc/suricata/rules/suricata.rules
+    owner: root
+    group: root
+    mode: '0644'
+- name: "Restart suricata service"
+  service:
+    name: "suricata"
+    enabled: yes
+    state: restarted
+

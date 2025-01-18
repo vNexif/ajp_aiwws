@@ -20,17 +20,21 @@
    msg: "{{ hostvars[inventory_hostname].ansible_distribution_version }}"
 
 - name: "Add Ubuntu suricata"
-  include_tasks: suricata_debian.yml
+  include_tasks: suricata_debian_compile.yml
   when: " ansible_os_family == 'Debian' and ansible_distribution in ['Ubuntu'] and ansible_distribution_version in ['16.04'] "
 
 - name: "Add Debian suricata"
-  include_tasks: suricata_debian.yml
+  include_tasks: suricata_debian_compile.yml
   when: " ansible_os_family == 'Debian' and ansible_distribution == 'Debian'  and ansible_distribution_version == '10.1'  "
 
+- name: "Install Debian 11 suricata"
+  include_tasks: suricata_debian.yml
+  when: " ansible_os_family == 'Debian' and ansible_distribution == 'Debian'  and ansible_distribution_version == '11'  "
+
 - name: "Add RedHat suricata"
-  include_tasks: suricata_redhat.yml
+  include_tasks: suricata_redhat_compile.yml
   when: " ansible_os_family == 'RedHat' and ansible_distribution in ['CentOS'] and ansible_distribution_version in ['7.7'] "
 
 - name: "Add Fedora suricata"
-  include_tasks: suricata_fedora.yml
+  include_tasks: suricata_fedora_compile.yml
   when: " ansible_os_family == 'RedHat' and ansible_distribution in ['Fedora'] "
